@@ -9,7 +9,7 @@ from bson.objectid import ObjectId
 # Instantiate the Flask class by creating a flask application
 app = Flask(__name__)
 # Create the mongodb client
-client = MongoClient(mongodb://mongouser:mongopassword@flaskmongodb:27017/)
+client = MongoClient("mongodb://mongouser:mongopassword@flaskmongodb:27017/")
 # Get and Post Route
 @app.route("/", methods=('GET', 'POST'))
 def index():
