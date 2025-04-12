@@ -40,6 +40,25 @@ jobs:
     - name: Update kube config
       run: aws eks update-kubeconfig --name ${{ env.EKS_CLUSTER }} --region ${{ env.AWS_REGION }}
 
+    # Add these new steps here
+    - name: Install Helm
+      uses: azure/setup-helm@v3
+      with:
+        version: v3.12.0
+
+    - name: Verify ALB Controller
+      run: |
+        kubectl get pods -n kube-system -l app.kubernetes.io/name=aws-load-balancer-controller
+        if ($LASTEXITCODE -ne 0) {
+          echo "Installing AWS Load Balancer Controller..."
+          helm repo add eks https://aws.github.io/eks-charts
+          helm repo update eks
+          helm upgrade --install aws-load-balancer-controller eks/aws-load-balancer-controller `
+            -n kube-system `
+            -f alb-controller-values.yaml
+        }
+    # End of added changes
+    
     - name: Deploy to EKS
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}

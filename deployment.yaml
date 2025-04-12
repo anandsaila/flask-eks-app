@@ -19,6 +19,18 @@ spec:
         image: ${ECR_REPOSITORY_URI}:${IMAGE_TAG}
         ports:
         - containerPort: 5000
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 15
+          periodSeconds: 20
         resources:
           requests:
             memory: "128Mi"
@@ -33,6 +45,7 @@ metadata:
   name: flask-app-service
   namespace: default
 spec:
+  type: LoadBalancer
   ports:
   - port: 80
     targetPort: 5000
