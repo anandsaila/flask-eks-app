@@ -53,4 +53,4 @@ todos = db.todos # creating a collection called "todos"
 
 # The dunder if __name__ code block
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True) #running your server on development mode, setting debug to True
+    app.run(host="0.0.0.0", port=5000, debug=True, threaded=True) #running your server on development mode, setting debug to True

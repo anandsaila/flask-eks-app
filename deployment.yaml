@@ -17,20 +17,26 @@ spec:
       containers:
       - name: flask-app
         image: 872515255820.dkr.ecr.ap-south-1.amazonaws.com/flask-app:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
+          name: http
         readinessProbe:
           httpGet:
-            path: /
+            path: /health
             port: 5000
           initialDelaySeconds: 5
           periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
         livenessProbe:
           httpGet:
-            path: /
+            path: /health
             port: 5000
           initialDelaySeconds: 15
           periodSeconds: 20
+          timeoutSeconds: 5
+          failureThreshold: 3
         resources:
           requests:
             memory: "128Mi"
