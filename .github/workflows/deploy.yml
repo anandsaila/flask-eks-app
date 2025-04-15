@@ -49,14 +49,14 @@ jobs:
     - name: Verify ALB Controller
       run: |
         kubectl get pods -n kube-system -l app.kubernetes.io/name=aws-load-balancer-controller
-        if ($LASTEXITCODE -ne 0) {
+        if [ $? -ne 0 ]; then
           echo "Installing AWS Load Balancer Controller..."
           helm repo add eks https://aws.github.io/eks-charts
           helm repo update eks
-          helm upgrade --install aws-load-balancer-controller eks/aws-load-balancer-controller `
-            -n kube-system `
+          helm upgrade --install aws-load-balancer-controller eks/aws-load-balancer-controller \
+            -n kube-system \
             -f alb-controller-values.yaml
-        }
+        fi
     # End of added changes
     
     - name: Deploy to EKS
