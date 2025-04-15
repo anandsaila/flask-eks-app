@@ -7,6 +7,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
+# Create a file and add content
+RUN touch wizexercise.txt
+RUN echo "This is the Wiz Exercise lab" > wizexercise.txt
+
 EXPOSE 5000
 
 CMD ["python", "app.py"]
